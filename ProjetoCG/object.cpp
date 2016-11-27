@@ -158,7 +158,6 @@ void Object::resetMatrix(){
  */
 void Object::draw(){
 	
-	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(text_target, text_gl_name);
 
 	glBindVertexArray(vao);
