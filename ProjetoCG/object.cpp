@@ -1,4 +1,4 @@
-#include <scene.h>
+#include <camera.h>
 
 /**
  * Contrutor vazio.
