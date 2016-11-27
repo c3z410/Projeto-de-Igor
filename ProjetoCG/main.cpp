@@ -20,17 +20,32 @@ GLuint textures[5];
 
 tAABB pz1 = {45.0f, 16.1f, -45.0f, 14.1f};
 tAABB pz2 = {45.0f, -14.1f, -45.0f, -16.1f};
+tAABB pz3 = {23.0f, -9.1f, 20.0f, -11.1f};
+tAABB pz4 = {34.0f, 4.1f, 37.0f, 2.1f};
+tAABB pz5 = {32.0f, 1.1f, 34.0f, -1.1f};
+tAABB pz6 = {34.0f, 12.1f, 31.0f, 10.1f};
+tAABB pz7 = {32.0f, 1.1f, 34.0f, -1.1f};
+tAABB pz8 = {37.0f, 9.1f, 45.0f, 7.1f};
+tAABB pz9 = {37.0f, 12.1f, 45.0f, 10.1f};
+
 tAABB px1 = {16.1f, 7.0f, 14.1f, -15.0f};
 tAABB px2 = {-14.1f, 7.0f, -16.1f, -15.0f};
 tAABB px3 = {16.1f, 15.0f, 14.1f, 10.0f};
 tAABB px4 = {-14.1f, 15.0f, -16.1f, 10.0f};
-tAABB px5 = {16.1f, 7.0f, 14.1f, -15.0f};
-tAABB px6 = {-14.1f, 7.0f, -16.1f, -15.0f};
-tAABB px7 = {16.1f, 15.0f, 14.1f, 10.0f};
-tAABB px8 = {-14.1f, 15.0f, -16.1f, 10.0f};
+tAABB px5 = {46.1f, 15.0f, 44.1f, -15.0f};
+tAABB px6 = {-44.1f, 15.0f, -46.1f, -15.0f};
+tAABB px7 = {21.1f, 15.0f, 19.1f, -10.0f};
+tAABB px8 = {24.1f, 15.0f,22.1f, -10.0f};
+tAABB px9 = {35.1f, 3.0f, 33.1f, -15.0f};
+tAABB px10 = {38.1f, 3.0f, 36.1f, -15.0f};
+tAABB px11 = {29.1f, 3.0f, 27.1f, 0.0f};
+tAABB px12 = {35.1f, 3.0f, 33.1f, 0.0f};
+tAABB px13 = {33.1f, 11.0f, 35.1f, 3.0f};
+tAABB px14 = {30.1f, 11.0f, 32.1f, 3.0f};
+tAABB px15 = {36.1f, 11.0f, 34.1f, 8.0f};
 
-tAABB inZ[2] = {pz1, pz2}; 
-tAABB inX[8] = {px1, px2, px3, px4, px5, px6, px7, px8};
+tAABB inZ[9] = {pz1, pz2, pz3, pz4, pz5, pz6, pz7, pz8, pz9}; 
+tAABB inX[15] = {px1, px2, px3, px4, px5, px6, px7, px8, px9, px10, px11, px12, px13, px14, px15};
 
 GLfloat LightAmbient[]= { 1.0f, 1.0f, 1.0f, 1.0f }; 
 GLfloat LightDiffuse[]= { 0.5f, 0.5f, 0.5f, 1.0f };
@@ -47,25 +62,34 @@ bool AABBtoAABB(const tAABB& tBox1, const tAABB& tBox2){
 void outofBoxZ(Camera *p, tAABB sala){
 		if((AABBtoAABB(p->player, sala))){
 			if(p->posz >= 0.0f){
-				p->posz += - 0.13f;
+				if(p->posz > (sala.MaxZ+sala.MinZ)/2){
+					p->posz += 0.15f;
+				} else {
+					p->posz += - 0.15f;
+				}
 			} else {
-				p->posz = sala.MaxZ + 0.15f;
+				if(p->posz < (sala.MaxZ+sala.MinZ)/2){
+					p->posz += 0.15f;
+				} else {
+					p->posz += - 0.15f;
+				}
 			}	 
 		}
 }
+
 void outofBoxX(Camera *p, tAABB sala){
 		if((AABBtoAABB(p->player, sala))){
 			if(p->posx >= 0.0f){
 				if(p->posx > (sala.MaxX+sala.MinX)/2){
-					p->posx += 0.14f;
+					p->posx += 0.15f;
 				} else {
-					p->posx += - 0.14f;
+					p->posx += - 0.15f;
 				}
 			} else {
-				if(p->posx > (sala.MaxX+sala.MinX)/2){
-					p->posx += 0.14f;
+				if(p->posx < (sala.MaxX+sala.MinX)/2){
+					p->posx += 0.15f;
 				} else {
-					p->posx += - 0.14f;
+					p->posx += - 0.15f;
 				}
 			}	 
 		}
@@ -439,56 +463,6 @@ void Draw3(){
 			glTexCoord2f(1.0f, 1.0f); glVertex3f(a, h, a);
 			glTexCoord2f(0.0f, 1.0f); glVertex3f(-a, h, a);
 		glEnd();
-		/*glBindTexture(GL_TEXTURE_2D, textures[2]);
-		glBegin(GL_QUADS);  
-		//esquerda 1
-		glNormal3f(1.0f, 0.0f, 0.0f);
-			glTexCoord2f(0.0f, 0.0f); glVertex3f(-a, 0.0f, -a);
-			glTexCoord2f(1.0f, 0.0f); glVertex3f(-a, 0.0f, d);
-			glTexCoord2f(1.0f, 1.0f); glVertex3f(-a, h, d);
-			glTexCoord2f(0.0f, 1.0f); glVertex3f(-a, h, -a);
-		glEnd();
-		glBegin(GL_QUADS);
-		//esquerda 2
-		glNormal3f(1.0f, 0.0f, 0.0f);
-			glTexCoord2f(0.0f, 0.0f); glVertex3f(-a, c, d);
-			glTexCoord2f(1.0f, 0.0f); glVertex3f(-a, c, a);
-			glTexCoord2f(1.0f, 1.0f); glVertex3f(-a, h, a);
-			glTexCoord2f(0.0f, 1.0f); glVertex3f(-a, h, d);
-		glEnd();
-		glBegin(GL_QUADS);
-		//esquerda 3
-		glNormal3f(1.0f, 0.0f, 0.0f);
-			glTexCoord2f(0.0f, 0.0f); glVertex3f(-a, 0.0f, b);
-			glTexCoord2f(1.0f, 0.0f); glVertex3f(-a, 0.0f, a);
-			glTexCoord2f(1.0f, 1.0f); glVertex3f(-a, h, a);
-			glTexCoord2f(0.0f, 1.0f); glVertex3f(-a, h, b);
-		glEnd();
-		glBindTexture(GL_TEXTURE_2D, textures[1]);
-		glBegin(GL_QUADS);
-		//direita 1
-		glNormal3f(1.0f, 0.0f, 0.0f);
-			glTexCoord2f(0.0f, 0.0f); glVertex3f(a, 0.0f, -a);
-			glTexCoord2f(1.0f, 0.0f); glVertex3f(a, 0.0f, d);
-			glTexCoord2f(1.0f, 1.0f); glVertex3f(a, h, d);
-			glTexCoord2f(0.0f, 1.0f); glVertex3f(a, h, -a);
-		glEnd();
-		glBegin(GL_QUADS);
-		//direita 2
-		glNormal3f(1.0f, 0.0f, 0.0f);
-			glTexCoord2f(0.0f, 0.0f); glVertex3f(a, c, d);
-			glTexCoord2f(1.0f, 0.0f); glVertex3f(a, c, a);
-			glTexCoord2f(1.0f, 1.0f); glVertex3f(a, h, a);
-			glTexCoord2f(0.0f, 1.0f); glVertex3f(a, h, d);
-		glEnd();
-		glBegin(GL_QUADS);
-		//direita 3
-		glNormal3f(1.0f, 0.0f, 0.0f);
-			glTexCoord2f(0.0f, 0.0f); glVertex3f(a, 0.0f, b);
-			glTexCoord2f(1.0f, 0.0f); glVertex3f(a, 0.0f, a);
-			glTexCoord2f(1.0f, 1.0f); glVertex3f(a, h, a);
-			glTexCoord2f(0.0f, 1.0f); glVertex3f(a, h, b);
-		glEnd();*/
 		glBindTexture(GL_TEXTURE_2D, textures[3]);
 		glBegin(GL_QUADS);
 		//frente
@@ -533,10 +507,10 @@ void display(void)
 	
 	camera.mover();
 	
-	for(int i = 0; i < 2; i++){
+	for(int i = 0; i < 9; i++){
 		outofBoxZ(&camera, inZ[i]);
 	}
-	for(int i = 0; i < 8; i++){
+	for(int i = 0; i < 15; i++){
 		outofBoxX(&camera, inX[i]);
 	}
 	camera.attAABB();
