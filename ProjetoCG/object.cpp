@@ -16,7 +16,7 @@ Object::~Object(){
  * Carrega os dados do objeto em um buffer.
  * @param object_name nome do arquivo onde se encontram os dados.
  */
-void Object::loadData(const std::string& object_name, const std::string& text_name){
+void Object::loadData(const std::string& object_name){
 
 	load_grouped_data(base_data_location + object_name, triangle_count, data, true);
 
