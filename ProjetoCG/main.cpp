@@ -11,6 +11,7 @@ using namespace sowi;
 
 bool c1 = false;
 bool c2 = false;
+bool close = false;
 
 Camera camera;
 
@@ -19,11 +20,11 @@ float b = 10.0f;
 float c = 6.0f;
 float d = 7.0f;
 float h = 10.0f;
-GLuint textures[5];
+GLuint textures[6];
 
 tAABB p1 = {45.6f, 15.6f, -45.6f, 14.4f};
 tAABB p15 = {45.6f, -14.4f, 1.9f, -15.6f};
-tAABB p14 = {3.1f, -14.4f, -45.6f, -15.6f};
+tAABB p14 = {-1.9f, -14.4f, -45.6f, -15.6f};
 tAABB p2 = {45.6f, -14.4f, -45.6f, -15.6f};
 tAABB p3 = {23.6f, 15.6f, 19.4f, -10.6f};
 tAABB p4 = {37.6f, 3.6f, 33.4f, -15.6f};
@@ -78,6 +79,7 @@ void outofBox(Camera *p, tAABB sala){
 }
 void FIM(Camera *p, tAABB sala){
 		if((AABBtoAABB(p->futplayer, sala))){
+			close = true;
 			glutDestroyWindow(1);
 		}
 }
@@ -127,7 +129,7 @@ int LoadGLTextures()
         SOIL_FLAG_INVERT_Y
         );
 
-    if(textures[0] == 0)
+    if(textures[1] == 0)
         return false;
 
     glBindTexture(GL_TEXTURE_2D, textures[1]);
@@ -142,7 +144,7 @@ int LoadGLTextures()
         SOIL_FLAG_INVERT_Y
         );
 
-    if(textures[0] == 0)
+    if(textures[2] == 0)
         return false;
 
     glBindTexture(GL_TEXTURE_2D, textures[2]);
@@ -157,7 +159,7 @@ int LoadGLTextures()
         SOIL_FLAG_INVERT_Y
         );
 
-    if(textures[0] == 0)
+    if(textures[3] == 0)
         return false;
 
     glBindTexture(GL_TEXTURE_2D, textures[3]);
@@ -172,10 +174,25 @@ int LoadGLTextures()
         SOIL_FLAG_INVERT_Y
         );
 
-    if(textures[0] == 0)
+    if(textures[4] == 0)
         return false;
 
     glBindTexture(GL_TEXTURE_2D, textures[1]);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    
+    textures[5] = SOIL_load_OGL_texture
+        (
+        "imagens/porta.jpg",
+        SOIL_LOAD_AUTO,
+        SOIL_CREATE_NEW_ID,
+        SOIL_FLAG_INVERT_Y
+        );
+
+    if(textures[5] == 0)
+        return false;
+
+    glBindTexture(GL_TEXTURE_2D, textures[0]);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 
@@ -550,6 +567,14 @@ void Draw3(){
 			glTexCoord2f(1.0f, 1.0f); glVertex3f(a, h, -a);
 			glTexCoord2f(0.0f, 1.0f); glVertex3f(-a, h, -a);
 		glEnd();
+		glBindTexture(GL_TEXTURE_2D, textures[5]);
+		glBegin(GL_QUADS);
+		glNormal3f(0.0f, 0.0f, 1.0f);
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f, 0.0f, -14.9f);
+			glTexCoord2f(1.0f, 0.0f); glVertex3f(2.5f, 0.0f, -14.9f);
+			glTexCoord2f(1.0f, 1.0f); glVertex3f(2.5f, c, -14.9f);
+			glTexCoord2f(0.0f, 1.0f); glVertex3f(-2.5f, c, -14.9f);
+		glEnd();
 		} else {
 		glBegin(GL_QUADS);	
 		glNormal3f(0.0f, 0.0f, 1.0f);
@@ -597,7 +622,7 @@ void display(void)
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(55.0f, 1.0f, 0.1f, 100.0f);
+	gluPerspective(55.0f, 1.0f, 0.001f, 100.0f);
 
 	camera.mover();
 	if((!(c1)) || (!(c2))){
@@ -638,10 +663,11 @@ void display(void)
 		Draw1();
 	glPopMatrix();
 
-	glutSwapBuffers();
-	glutPostRedisplay();
+	if(!close){
+		glutSwapBuffers();
+		glutPostRedisplay();
+	}
 }
-
 
 int main(int argc, char **argv)
 {
