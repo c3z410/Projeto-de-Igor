@@ -1,7 +1,7 @@
 #include <camera.h>
 
 /**
- * Contrutor vazio.
+ * Contrutor vazio.*/
 copo::copo(){}
 
 copo::~copo(){
