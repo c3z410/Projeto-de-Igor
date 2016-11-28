@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "SOIL.h"
 #include "AABB.h"
+#include "objLoader.h"
 
 using namespace std;
 using namespace sowi;
@@ -14,13 +15,15 @@ bool c2 = false;
 bool close = false;
 
 Camera camera;
+objLoader *objData;
 
+float r = 0.0f;
 float a = 15.0f;
 float b = 10.0f;
 float c = 6.0f;
 float d = 7.0f;
 float h = 10.0f;
-GLuint textures[6];
+GLuint textures[7];
 
 tAABB p1 = {45.6f, 15.6f, -45.6f, 14.4f};
 tAABB p15 = {45.6f, -14.4f, 1.9f, -15.6f};
@@ -177,7 +180,7 @@ int LoadGLTextures()
     if(textures[4] == 0)
         return false;
 
-    glBindTexture(GL_TEXTURE_2D, textures[1]);
+    glBindTexture(GL_TEXTURE_2D, textures[4]);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
     
@@ -192,7 +195,22 @@ int LoadGLTextures()
     if(textures[5] == 0)
         return false;
 
-    glBindTexture(GL_TEXTURE_2D, textures[0]);
+    glBindTexture(GL_TEXTURE_2D, textures[5]);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    
+    textures[6] = SOIL_load_OGL_texture
+        (
+        "imagens/yellow.jpeg",
+        SOIL_LOAD_AUTO,
+        SOIL_CREATE_NEW_ID,
+        SOIL_FLAG_INVERT_Y
+        );
+
+    if(textures[6] == 0)
+        return false;
+
+    glBindTexture(GL_TEXTURE_2D, textures[6]);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 
@@ -201,7 +219,7 @@ int LoadGLTextures()
 
 void DrawCubo()
 {
-	float lado = 0.5f;
+	/*float lado = 0.5f;
 
 	glBindTexture(GL_TEXTURE_2D, textures[3]);
 	glBegin(GL_QUADS);
@@ -242,6 +260,34 @@ void DrawCubo()
 		glTexCoord2f(0.0f, 0.0f); glVertex3f(-lado, lado, -lado);
 		glTexCoord2f(1.0f, 0.0f); glVertex3f(-lado, lado, lado);
 
+	glEnd();*/
+	glBindTexture(GL_TEXTURE_2D, textures[6]);
+	glBegin(GL_QUADS);
+		for(int i=0; i<objData->faceCount; i++)
+		{
+			obj_face *o = objData->faceList[i];
+
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(objData->vertexList[o->vertex_index[0]]->e[0], // primeira linha
+						objData->vertexList[o->vertex_index[0]]->e[1],
+						objData->vertexList[o->vertex_index[0]]->e[2]);
+			glVertex3f(objData->vertexList[o->vertex_index[1]]->e[0],
+						objData->vertexList[o->vertex_index[1]]->e[1],
+						objData->vertexList[o->vertex_index[1]]->e[2]);
+
+			glTexCoord2f(1.0f, 0.0f); glVertex3f(objData->vertexList[o->vertex_index[1]]->e[0],	// segunda linha
+						objData->vertexList[o->vertex_index[1]]->e[1],
+						objData->vertexList[o->vertex_index[1]]->e[2]);
+			glVertex3f(	objData->vertexList[o->vertex_index[2]]->e[0],
+						objData->vertexList[o->vertex_index[2]]->e[1],
+						objData->vertexList[o->vertex_index[2]]->e[2]);
+
+			glTexCoord2f(0.0f, 1.0f); glVertex3f(objData->vertexList[o->vertex_index[2]]->e[0],	// terceira linha
+						objData->vertexList[o->vertex_index[2]]->e[1],
+						objData->vertexList[o->vertex_index[2]]->e[2]);
+			glVertex3f(	objData->vertexList[o->vertex_index[0]]->e[0],
+						objData->vertexList[o->vertex_index[0]]->e[1],
+						objData->vertexList[o->vertex_index[0]]->e[2]);
+		}
 	glEnd();
 }
 
@@ -315,6 +361,7 @@ void Draw1(){
 		if(!(c1)){
 		glPushMatrix();
 			glTranslatef(12.0f,2.5f,-12.0f);
+			glRotatef(r, 0, 1, 0);
 			DrawCubo();
 		glPopMatrix();
 		}
@@ -526,6 +573,7 @@ void Draw2(){
 		if(!(c2)){
 		glPushMatrix();
 			glTranslatef(-14.0f,2.5f, 0.0f);
+			glRotatef(r, 0, 1, 0);
 			DrawCubo();
 		glPopMatrix();
 		}
@@ -662,6 +710,8 @@ void display(void)
 		glTranslatef((a*2), 0.0f, 0.0f);
 		Draw1();
 	glPopMatrix();
+	
+	r += 3.0f;
 
 	if(!close){
 		glutSwapBuffers();
@@ -672,7 +722,10 @@ void display(void)
 int main(int argc, char **argv)
 {
 	std::clog << "Begin...\n";
-
+	
+	objData = new objLoader();			
+	objData->load("monkey_head2.obj");
+	
 	glutInit(&argc,argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE | GLUT_ALPHA);
 	glutInitWindowSize(camera.width, camera.height);
