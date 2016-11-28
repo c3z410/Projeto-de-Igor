@@ -9,6 +9,9 @@
 using namespace std;
 using namespace sowi;
 
+bool c1 = false;
+bool c2 = false;
+
 Camera camera;
 
 float a = 15.0f;
@@ -18,17 +21,23 @@ float d = 7.0f;
 float h = 10.0f;
 GLuint textures[5];
 
-tAABB p1 = {45.0f, 15.6f, -45.0f, 14.4f};
-tAABB p2 = {45.0f, -14.4f, -45.0f, -15.6f};
+tAABB p1 = {45.6f, 15.6f, -45.6f, 14.4f};
+tAABB p15 = {45.6f, -14.4f, 1.9f, -15.6f};
+tAABB p14 = {3.1f, -14.4f, -45.6f, -15.6f};
+tAABB p2 = {45.6f, -14.4f, -45.6f, -15.6f};
 tAABB p3 = {23.6f, 15.6f, 19.4f, -10.6f};
 tAABB p4 = {37.6f, 3.6f, 33.4f, -15.6f};
 tAABB p5 = {34.6f, 3.6f, 27.6f, -0.6f};
 tAABB p6 = {34.6f, 11.6f, 30.4f, 2.4f};
 tAABB p7 = {45.6f, 11.6f, 36.4f, 7.4f};
-tAABB p8 = {15.6f, 7.0f, 14.4f, -15.0f};
-tAABB p9 = {-14.4f, 7.0f, -15.6f, -15.0f};
-tAABB p10 = {15.6f, 15.0f, 14.4f, 10.0f};
-tAABB p11 = {-14.4f, 15.0f, -15.6f, 10.0f};
+tAABB p8 = {15.6f, 7.6f, 14.4f, -15.6f};
+tAABB p9 = {-14.4f, 7.6f, -15.6f, -15.6f};
+tAABB p10 = {15.6f, 15.6f, 14.4f, 9.4f};
+tAABB p11 = {-14.4f, 15.6f, -15.6f, 9.4f};
+tAABB p12 = {45.6f, 15.6f, 44.4f, -15.6f};
+tAABB p13 = {-44.4f, 15.6f, -45.6f, -15.6};
+
+tAABB X1 = {50.0f, -15.0f, -50.0f, -17.0f};
 
 tAABB s1 = {-28.455f, -4.4f, -31.54f, -15.6f};
 tAABB s2 = {-36.85f, 5.6f, -40.1f, -5.6f};
@@ -41,21 +50,20 @@ tAABB s7 = {-28.455f, 15.6f, -31.54f, 4.4f};
 tAABB s8 = {-28.455f, 5.6f, -31.54f, -5.6f};
 tAABB s9 = {-36.85f, -4.4f, -40.1f, -15.6f};
 
+tAABB cubo1 = {43.1f, -10.9f, 40.9f, -13.1f};
+tAABB cubo2 = {-42.9f, 1.1f, -45.1f, -1.1f};
+
+tAABB cubos[2] = {cubo1, cubo2};
 tAABB gg[3] = {s1, s2, s3};
 tAABB ff[6] = {s4, s5, s6, s7, s8, s9};
-tAABB in[11] = {p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11};
+tAABB in[13] = {p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13};
+tAABB in2[14] = {p1, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15};
 
 GLfloat LightAmbient[]= { 1.0f, 1.0f, 1.0f, 1.0f };
-GLfloat LightAmbient1[]= { 1.0f, 0.0f, 0.0f, 1.0f };
-GLfloat LightAmbient3[]= { 0.0f, 1.0f, 0.0f, 1.0f };
-GLfloat LightAmbient2[]= { 0.0f, 0.0f, 1.0f, 1.0f };
 GLfloat LightDiffuse[]= { 0.5f, 0.5f, 0.5f, 1.0f };
-GLfloat LightPosition1[]= { 0.0f, 10.0f, 0.0f, 1.0f };
-GLfloat LightPosition2[]= { ((-a)*2), 10.0f, 0.0f, 1.0f };
-GLfloat LightPosition3[]= { ((a)*2), 10.0f, 0.0f, 1.0f };
-GLfloat LightPosition4[]= { -29.9975f, 0.2f, -10.0f, 0.5f };
-GLfloat LightPosition5[]= { -38.475f, 0.2f, 0.0f, 1.0f };
-GLfloat LightPosition6[]= { -21.4275f, 0.2f, 0.0f, 1.0f };
+GLfloat LightPosition1[]= { 0.0f, 9.9f, 0.0f, 1.0f };
+GLfloat LightPosition2[]= { ((-a)*2), 9.9f, 0.0f, 1.0f };
+GLfloat LightPosition3[]= { ((a)*2), 9.9f, 0.0f, 1.0f };
 
 bool AABBtoAABB(const tAABB& tBox1, const tAABB& tBox2){
 		return(tBox1.MaxX < tBox2.MaxX &&
@@ -68,34 +76,32 @@ void outofBox(Camera *p, tAABB sala){
 			p->move = false;
 		}
 }
+void FIM(Camera *p, tAABB sala){
+		if((AABBtoAABB(p->futplayer, sala))){
+			glutDestroyWindow(1);
+		}
+}
 void inBoxF(Camera *p, tAABB sala){
 		if((AABBtoAABB(p->futplayer, sala))){
 			p->futposx = -15.0f;
 			p->futposz = 8.5f;
 		}
 }
-void inBoxT1(Camera *p, tAABB sala){
-		if((AABBtoAABB(p->futplayer, sala))){
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-			glEnable(GL_BLEND);
-			glEnable(GL_LIGHT4);
-		}
-}
-void inBoxT2(Camera *p, tAABB sala){
-		if((AABBtoAABB(p->futplayer, sala))){
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-			glEnable(GL_BLEND);
-			glEnable(GL_LIGHT5);
-		}
-}
-void inBoxT3(Camera *p, tAABB sala){
-		if((AABBtoAABB(p->futplayer, sala))){
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-			glEnable(GL_BLEND);
-			glEnable(GL_LIGHT6);
-		}
-}
 
+void pegaC1(Camera *p, tAABB sala){
+		if((AABBtoAABB(p->futplayer, sala))){
+			c1 = true;
+			p->futposx = 15.0f;
+			p->futposz = 8.5f;
+		}
+}
+void pegaC2(Camera *p, tAABB sala){
+		if((AABBtoAABB(p->futplayer, sala))){
+			c2 = true;
+			p->futposx = -15.0f;
+			p->futposz = 8.5f;
+		}
+}
 int LoadGLTextures()
 {
     textures[0] = SOIL_load_OGL_texture
@@ -289,11 +295,12 @@ void Draw1(){
 			glTexCoord2f(1.0f, 1.0f); glVertex3f(a, h, -a);
 			glTexCoord2f(0.0f, 1.0f); glVertex3f(-a, h, -a);
 		glEnd();
-
+		if(!(c1)){
 		glPushMatrix();
 			glTranslatef(12.0f,2.5f,-12.0f);
 			DrawCubo();
 		glPopMatrix();
+		}
 		glColor4f(0.0f,0.0f,0.0f,0.0f);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 		glEnable(GL_BLEND);
@@ -498,11 +505,13 @@ void Draw2(){
 			glTexCoord2f(1.0f, 1.0f); glVertex3f(a, h, -a);
 			glTexCoord2f(0.0f, 1.0f); glVertex3f(-a, h, -a);
 		glEnd();
-
+		
+		if(!(c2)){
 		glPushMatrix();
 			glTranslatef(-14.0f,2.5f, 0.0f);
 			DrawCubo();
 		glPopMatrix();
+		}
 }
 
 void Draw3(){
@@ -532,14 +541,38 @@ void Draw3(){
 			glTexCoord2f(1.0f, 1.0f); glVertex3f(a, h, a);
 			glTexCoord2f(0.0f, 1.0f); glVertex3f(-a, h, a);
 		glEnd();
-		glBegin(GL_QUADS);
 		//tras
+		if((!(c1)) || (!(c2))){
+		glBegin(GL_QUADS);
 		glNormal3f(0.0f, 0.0f, 1.0f);
 			glTexCoord2f(0.0f, 0.0f); glVertex3f(-a, 0.0f, -a);
 			glTexCoord2f(1.0f, 0.0f); glVertex3f(a, 0.0f, -a);
 			glTexCoord2f(1.0f, 1.0f); glVertex3f(a, h, -a);
 			glTexCoord2f(0.0f, 1.0f); glVertex3f(-a, h, -a);
 		glEnd();
+		} else {
+		glBegin(GL_QUADS);	
+		glNormal3f(0.0f, 0.0f, 1.0f);
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(a, 0.0f, -a);
+			glTexCoord2f(1.0f, 0.0f); glVertex3f(2.5f, 0.0f, -a);
+			glTexCoord2f(1.0f, 1.0f); glVertex3f(2.5f, h, -a);
+			glTexCoord2f(0.0f, 1.0f); glVertex3f(a, h, -a);
+		glEnd();
+		glBegin(GL_QUADS);	
+		glNormal3f(0.0f, 0.0f, 1.0f);
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(-a, 0.0f, -a);
+			glTexCoord2f(1.0f, 0.0f); glVertex3f(-2.5f, 0.0f, -a);
+			glTexCoord2f(1.0f, 1.0f); glVertex3f(-2.5f, h, -a);
+			glTexCoord2f(0.0f, 1.0f); glVertex3f(-a, h, -a);
+		glEnd();
+		glBegin(GL_QUADS);	
+		glNormal3f(0.0f, 0.0f, 1.0f);
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f, c, -a);
+			glTexCoord2f(1.0f, 0.0f); glVertex3f(2.5f, c, -a);
+			glTexCoord2f(1.0f, 1.0f); glVertex3f(2.5f, h, -a);
+			glTexCoord2f(0.0f, 1.0f); glVertex3f(-2.5f, h, -a);
+		glEnd();
+		}
 }
 
 void free_mem(void)
@@ -557,6 +590,7 @@ void keyUp(unsigned char key, int x, int y){
 }
 void display(void)
 {
+	
 	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glViewport(0, 0, camera.width, camera.height);
@@ -566,9 +600,14 @@ void display(void)
 	gluPerspective(55.0f, 1.0f, 0.1f, 100.0f);
 
 	camera.mover();
-
-	for(int i = 0; i < 11; i++){
-		outofBox(&camera, in[i]);
+	if((!(c1)) || (!(c2))){
+		for(int i = 0; i < 13; i++){
+			outofBox(&camera, in[i]);
+		}
+	} else {
+		for(int i = 0; i < 14; i++){
+			outofBox(&camera, in2[i]);
+		}
 	}
 
 	camera.attAABB();
@@ -577,9 +616,10 @@ void display(void)
 		inBoxF(&camera, ff[i]);
 	}
 	
-	inBoxT1(&camera, s1);
-	inBoxT2(&camera, s2);
-	inBoxT3(&camera, s3);
+	pegaC1(&camera, cubo1);
+	pegaC2(&camera, cubo2);
+	
+	FIM(&camera, X1);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -638,18 +678,6 @@ int main(int argc, char **argv)
 	glLightfv(GL_LIGHT3, GL_DIFFUSE, LightDiffuse);
 	glLightfv(GL_LIGHT3, GL_POSITION, LightPosition3);
 	glEnable(GL_LIGHT3);
-	
-	glLightfv(GL_LIGHT4, GL_AMBIENT, LightAmbient);
-	glLightfv(GL_LIGHT4, GL_DIFFUSE, LightDiffuse);
-	glLightfv(GL_LIGHT4, GL_POSITION, LightPosition4);
-
-	glLightfv(GL_LIGHT5, GL_AMBIENT, LightAmbient);
-	glLightfv(GL_LIGHT5, GL_DIFFUSE, LightDiffuse);
-	glLightfv(GL_LIGHT5, GL_POSITION, LightPosition5);
-	
-	glLightfv(GL_LIGHT6, GL_AMBIENT, LightAmbient);
-	glLightfv(GL_LIGHT6, GL_DIFFUSE, LightDiffuse);
-	glLightfv(GL_LIGHT6, GL_POSITION, LightPosition6);
 	
 	glEnable(GL_LIGHTING);
 
