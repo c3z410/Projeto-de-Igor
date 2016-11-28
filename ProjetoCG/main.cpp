@@ -18,40 +18,44 @@ float d = 7.0f;
 float h = 10.0f;
 GLuint textures[5];
 
-tAABB pz1 = {45.0f, 15.6f, -45.0f, 14.4f};
-tAABB pz2 = {45.0f, -14.4f, -45.0f, -15.6f};
-tAABB pz3 = {23.0f, -9.1f, 20.0f, -11.1f};
-tAABB pz4 = {34.0f, 4.1f, 37.0f, 2.1f};
-tAABB pz5 = {32.0f, 1.1f, 34.0f, -1.1f};
-tAABB pz6 = {34.0f, 12.1f, 31.0f, 10.1f};
-tAABB pz7 = {32.0f, 1.1f, 34.0f, -1.1f};
-tAABB pz8 = {37.0f, 9.1f, 45.0f, 7.1f};
-tAABB pz9 = {37.0f, 12.1f, 45.0f, 10.1f};
+tAABB p1 = {45.0f, 15.6f, -45.0f, 14.4f};
+tAABB p2 = {45.0f, -14.4f, -45.0f, -15.6f};
+tAABB p3 = {23.6f, 15.6f, 19.4f, -10.6f};
+tAABB p4 = {37.6f, 3.6f, 33.4f, -15.6f};
+tAABB p5 = {34.6f, 3.6f, 27.6f, -0.6f};
+tAABB p6 = {34.6f, 11.6f, 30.4f, 2.4f};
+tAABB p7 = {45.6f, 11.6f, 36.4f, 7.4f};
+tAABB p8 = {15.6f, 7.0f, 14.4f, -15.0f};
+tAABB p9 = {-14.4f, 7.0f, -15.6f, -15.0f};
+tAABB p10 = {15.6f, 15.0f, 14.4f, 10.0f};
+tAABB p11 = {-14.4f, 15.0f, -15.6f, 10.0f};
 
-tAABB px1 = {16.1f, 7.0f, 14.1f, -15.0f};
-tAABB px2 = {-14.1f, 7.0f, -16.1f, -15.0f};
-tAABB px3 = {16.1f, 15.0f, 14.1f, 10.0f};
-tAABB px4 = {-14.1f, 15.0f, -16.1f, 10.0f};
-tAABB px5 = {46.1f, 15.0f, 44.1f, -15.0f};
-tAABB px6 = {-44.1f, 15.0f, -46.1f, -15.0f};
-tAABB px7 = {21.1f, 15.0f, 19.1f, -10.0f};
-tAABB px8 = {24.1f, 15.0f,22.1f, -10.0f};
-tAABB px9 = {35.1f, 3.0f, 33.1f, -15.0f};
-tAABB px10 = {38.1f, 3.0f, 36.1f, -15.0f};
-tAABB px11 = {29.1f, 3.0f, 27.1f, 0.0f};
-tAABB px12 = {35.1f, 3.0f, 33.1f, 0.0f};
-tAABB px13 = {33.1f, 11.0f, 35.1f, 3.0f};
-tAABB px14 = {30.1f, 11.0f, 32.1f, 3.0f};
-tAABB px15 = {36.1f, 11.0f, 34.1f, 8.0f};
+tAABB s1 = {-28.455f, -4.4f, -31.54f, -15.6f};
+tAABB s2 = {-36.85f, 5.6f, -40.1f, -5.6f};
+tAABB s3 = {-19.885f, 5.6f, -22.97f, -5.6f};
 
-tAABB inZ[9] = {pz1, pz2, pz3, pz4, pz5, pz6, pz7, pz8, pz9};
-tAABB inX[15] = {px1, px2, px3, px4, px5, px6, px7, px8, px9, px10, px11, px12, px13, px14, px15};
+tAABB s4 = {-19.885f, 15.6f, -22.97f, 4.4f};
+tAABB s5 = {-36.85f, 15.6f, -40.1f, 4.4f};
+tAABB s6 = {-19.885f, -4.4f, -22.97f, -15.6f};
+tAABB s7 = {-28.455f, 15.6f, -31.54f, 4.4f};
+tAABB s8 = {-28.455f, 5.6f, -31.54f, -5.6f};
+tAABB s9 = {-36.85f, -4.4f, -40.1f, -15.6f};
+
+tAABB gg[3] = {s1, s2, s3};
+tAABB ff[6] = {s4, s5, s6, s7, s8, s9};
+tAABB in[11] = {p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11};
 
 GLfloat LightAmbient[]= { 1.0f, 1.0f, 1.0f, 1.0f };
+GLfloat LightAmbient1[]= { 1.0f, 0.0f, 0.0f, 1.0f };
+GLfloat LightAmbient3[]= { 0.0f, 1.0f, 0.0f, 1.0f };
+GLfloat LightAmbient2[]= { 0.0f, 0.0f, 1.0f, 1.0f };
 GLfloat LightDiffuse[]= { 0.5f, 0.5f, 0.5f, 1.0f };
 GLfloat LightPosition1[]= { 0.0f, 10.0f, 0.0f, 1.0f };
 GLfloat LightPosition2[]= { ((-a)*2), 10.0f, 0.0f, 1.0f };
 GLfloat LightPosition3[]= { ((a)*2), 10.0f, 0.0f, 1.0f };
+GLfloat LightPosition4[]= { -29.9975f, 0.2f, -10.0f, 0.5f };
+GLfloat LightPosition5[]= { -38.475f, 0.2f, 0.0f, 1.0f };
+GLfloat LightPosition6[]= { -21.4275f, 0.2f, 0.0f, 1.0f };
 
 bool AABBtoAABB(const tAABB& tBox1, const tAABB& tBox2){
 		return(tBox1.MaxX < tBox2.MaxX &&
@@ -62,6 +66,33 @@ bool AABBtoAABB(const tAABB& tBox1, const tAABB& tBox2){
 void outofBox(Camera *p, tAABB sala){
 		if((AABBtoAABB(p->futplayer, sala))){
 			p->move = false;
+		}
+}
+void inBoxF(Camera *p, tAABB sala){
+		if((AABBtoAABB(p->futplayer, sala))){
+			p->futposx = -15.0f;
+			p->futposz = 8.5f;
+		}
+}
+void inBoxT1(Camera *p, tAABB sala){
+		if((AABBtoAABB(p->futplayer, sala))){
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+			glEnable(GL_BLEND);
+			glEnable(GL_LIGHT4);
+		}
+}
+void inBoxT2(Camera *p, tAABB sala){
+		if((AABBtoAABB(p->futplayer, sala))){
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+			glEnable(GL_BLEND);
+			glEnable(GL_LIGHT5);
+		}
+}
+void inBoxT3(Camera *p, tAABB sala){
+		if((AABBtoAABB(p->futplayer, sala))){
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+			glEnable(GL_BLEND);
+			glEnable(GL_LIGHT6);
 		}
 }
 
@@ -536,14 +567,19 @@ void display(void)
 
 	camera.mover();
 
-	for(int i = 0; i < 9; i++){
-		outofBox(&camera, inZ[i]);
-	}
-	for(int i = 0; i < 15; i++){
-		outofBox(&camera, inX[i]);
+	for(int i = 0; i < 11; i++){
+		outofBox(&camera, in[i]);
 	}
 
 	camera.attAABB();
+	
+	for(int i = 0; i < 6; i++){
+		inBoxF(&camera, ff[i]);
+	}
+	
+	inBoxT1(&camera, s1);
+	inBoxT2(&camera, s2);
+	inBoxT3(&camera, s3);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -602,6 +638,19 @@ int main(int argc, char **argv)
 	glLightfv(GL_LIGHT3, GL_DIFFUSE, LightDiffuse);
 	glLightfv(GL_LIGHT3, GL_POSITION, LightPosition3);
 	glEnable(GL_LIGHT3);
+	
+	glLightfv(GL_LIGHT4, GL_AMBIENT, LightAmbient);
+	glLightfv(GL_LIGHT4, GL_DIFFUSE, LightDiffuse);
+	glLightfv(GL_LIGHT4, GL_POSITION, LightPosition4);
+
+	glLightfv(GL_LIGHT5, GL_AMBIENT, LightAmbient);
+	glLightfv(GL_LIGHT5, GL_DIFFUSE, LightDiffuse);
+	glLightfv(GL_LIGHT5, GL_POSITION, LightPosition5);
+	
+	glLightfv(GL_LIGHT6, GL_AMBIENT, LightAmbient);
+	glLightfv(GL_LIGHT6, GL_DIFFUSE, LightDiffuse);
+	glLightfv(GL_LIGHT6, GL_POSITION, LightPosition6);
+	
 	glEnable(GL_LIGHTING);
 
 	glutDisplayFunc(display);
